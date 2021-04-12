@@ -1,0 +1,23 @@
+version: '2.1'
+services: 
+
+  rabbitmq:
+    image: rabbitmq
+    build: ../queue
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  commanddb:
+    image: commanddb
+    build: ./command_db/
+    ports: 
+      - 5432:5432
+
+  querydb:
+    image: querydb
+    build: ./query_db/
+    ports: 
+      - 27017:27017
+
+  

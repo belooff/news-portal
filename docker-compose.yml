@@ -1,0 +1,132 @@
+version: '2.1'
+services: 
+  
+  redis:
+    container_name: redis
+    image: redis
+    ports: 
+      - 6379:6379
+    healthcheck:
+      test: exit 0
+
+  rabbitmq:
+    image: rabbitmq
+    build: ./queue
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+
+  recommendation_db:
+    image: neo4j:latest
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      NEO4J_AUTH: "none"
+
+  recommendation_service:
+    image: recomendation_service
+    build: ./recommendation_service
+    volumes:
+      - ./recomendation_service:/app
+    environment:
+      - QUEUE_HOST=amqp://guest:guest@rabbitmq
+      - DATABASE_URL=http://recommendation_db:7474/db/data
+      - USER_SERVICE_ROUTE=http://172.17.0.1/user
+    depends_on:
+      - recommendation_db
+      - rabbitmq
+    links:
+      - recommendation_db
+      - rabbitmq
+
+  orcherstrator_news_service:
+    image: orcherstrator_news_service
+    build: ./orcherstrator_news_service
+    volumes: 
+      - './orcherstrator_news_service:/app'
+    environment: 
+      - APP_SETTINGS=config.DevelopmentConfig
+      - QUEUE_HOST=amqp://guest:guest@rabbitmq
+    depends_on: 
+      - famous_news_service
+      - rabbitmq
+    links: 
+      - famous_news_service
+      - rabbitmq
+
+  users-service-db:
+    container_name: users-service-db
+    build: ./users_service/db
+    ports: 
+      - 5435:5432 # HOST:CONTAINER
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: exit 0
+
+  querydb_famous:
+    image: querydb_famous
+    build: ./famous_news_service/query_db/
+    ports: 
+      - 5433:5432
+    restart: always
+
+  commanddb_famous:
+    image: commanddb_famous
+    build: ./famous_news_service/command_db/
+    ports: 
+      - 27017:27017
+    restart: always
+    healthcheck:
+      test: exit 0
+
+  userservice:
+    image: userservice
+    build: ./users_service
+    environment: 
+      - APP_RD_ADDRESS=redis:6379
+      - APP_RD_AUTH=password
+      - APP_RD_DBNAME=0
+      - DATABASE_URL=postgres://postgres:postgres@users-service-db:5432/users_prod?sslmode=disable
+      - DATABASE_DEV_URL=postgres://postgres:postgres@users-service-db:5432/users_dev?sslmode=disable
+      - DATABASE_TEST_URL=postgres://postgres:postgres@users-service-db:5432/users_test?sslmode=disable
+    depends_on: 
+      users-service-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    links: 
+      - users-service-db
+      - redis
+  
+  famous_news_service:
+    image: famous_news_service
+    build: ./famous_news_service
+    volumes: 
+      - ./famous_news_service:/app
+    environment: 
+      - QUERYDB_HOST=mongodb://querydb_famous:27017/
+      - COMMANDDB_HOST=postgresql://postgres:postgres@commanddb_famous:5432/news_prod?sslmode=disable
+      - QUEUE_HOST=amqp://guest:guest@rabbitmq
+    depends_on: 
+      - querydb_famous
+      - commanddb_famous
+      - rabbitmq
+    links: 
+      - querydb_famous
+      - commanddb_famous
+      - rabbitmq
+    restart: always
+
+  proxy:
+    container_name: userservice_loadbalance
+    build: ./nginx
+    ports: 
+      - 8888:80
+    links:
+      - userservice
+      - orcherstrator_news_service
+    restart: always

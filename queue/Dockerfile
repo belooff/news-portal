@@ -1,0 +1,5 @@
+FROM rabbitmq:3-management
+ENV RABBITMQ_ERLAND_COOKIE: "random string"
+ENV RABBITMQ_DEFAULt_USER: "guest"
+ENV RABBITMQ_DEFAULt_PASS: "guest"
+ENV RABBITMQ_DEFAULt_VHOST: "/"

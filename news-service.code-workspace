@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "famous_news_service"
+		},
+		{
+			"path": "nginx"
+		},
+		{
+			"path": "users_service"
+		},
+		{
+			"path": "orcherstrator_news_service"
+		},
+		{
+			"path": "queue"
+		},
+		{
+			"path": "recommendation_service"
+		}
+	],
+	"settings": {
+		"editor.fontSize": 12
+	}
+}

@@ -1,0 +1,19 @@
+FROM golang
+
+LABEL Name=userservice Version=0.0.1
+
+RUN mkdir -p /go/src \
+    && mkdir -p /go/bin \
+    && mkdir -p /go/pkg
+ENV GOPATH=/go
+ENV PATH=$GOPATH/bin:$PATH
+
+RUN mkdir -p $GOPATH/src/app
+ADD . $GOPATH/src/app
+
+WORKDIR $GOPATH/src/app
+RUN go env -w GO111MODULE=auto
+RUN go get
+RUN go build -o main .
+CMD ["/go/src/app/main"]
+EXPOSE 3000

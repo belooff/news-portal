@@ -1,0 +1,32 @@
+@baseUrl = http://localhost:8888
+
+
+GET {{baseUrl}}/users
+
+###
+GET {{baseUrl}}/user/7
+
+###
+POST {{baseUrl}}/user
+
+{
+    "name": "TestUser",
+    "email": "myemail@example.com",
+    "password": "password"
+}
+
+###
+
+PUT {{baseUrl}}/user/7
+
+{
+    "name": "MyUsername",
+}
+
+###
+
+DELETE {{baseUrl}}/user/123
+
+###
+GET {{baseUrl}}/news/famous/100
+
