@@ -1,7 +1,11 @@
-AMQP_URI: 'amqp://guest:guest@rabbitmq'
+AMQP_URI: ${QUEUE_HOST}
+
 WEB_SERVER_ADDRESS: '0.0.0.0:5000'
+
 max_workers: 10
+
 parent_calls_tracked: 10
+
 LOGGING:
   version: 1
   handlers:
