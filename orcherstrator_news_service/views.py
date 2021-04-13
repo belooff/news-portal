@@ -26,7 +26,7 @@ def get_single_news(news_type, news_id):
 
         return jsonify(response), 200
     except Exception as e:
-        return error_response(2, 500)
+        return error_response(e, 500)
 
 
 @news.route('/all/<int:num_page>/<int:limit>', methods=['GET'])
