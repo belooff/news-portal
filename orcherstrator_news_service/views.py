@@ -130,11 +130,11 @@ def rpc_command(news_type, data):
         news_type = 'famous'
 
         if news_type == 'famous':
-            news = rpc.query_famous.add_news(data)
+            news = rpc.command_famous.add_news(data)
         elif news_type == 'sports':
-            news = rpc.query_sports.add_news(data)
+            news = rpc.command_famous.add_news(data)
         elif news_type == 'politics':
-            news = rpc.query_politics.add_news(data)
+            news = rpc.command_famous.add_news(data)
         else:
             raise Exception('Invalid news type')
         

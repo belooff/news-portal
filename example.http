@@ -30,3 +30,14 @@ DELETE {{baseUrl}}/user/123
 ###
 GET {{baseUrl}}/news/famous/1
 
+###
+
+POST {{baseUrl}}/news/famous
+content-type: application/json
+
+{
+    "title": "Test Title",
+    "content": "Test Content",
+    "author": "Test Author",
+    "tags": ["one", "twoo"]
+}
