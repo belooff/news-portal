@@ -29,7 +29,7 @@ services:
     image: recomendation_service
     build: ./recommendation_service
     volumes:
-      - ./recomendation_service:/app
+      - ./recommendation_service:/app
     environment:
       - QUEUE_HOST=amqp://guest:guest@rabbitmq
       - DATABASE_URL=http://recommendation_db:7474/db/data
