@@ -40,6 +40,7 @@ services:
     links:
       - recommendation_db
       - rabbitmq
+    restart: always
 
   orcherstrator_news_service:
     image: orcherstrator_news_service

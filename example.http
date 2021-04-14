@@ -44,3 +44,11 @@ content-type: application/json
     "author": "Test Author",
     "tags": ["one", "twoo"]
 }
+
+###
+
+GET {{baseUrl}}/recommendation/user/1
+
+###
+
+GET {{baseUrl}}/recommendation/label/one
