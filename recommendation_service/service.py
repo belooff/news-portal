@@ -49,7 +49,7 @@ def error_response(code, ex):
         'status': 'fail',
         'message': str(ex),
     }
-    return code, json.dumps(response_object)
+    return code, json.dumps(response)
 
 
 class RecommendationApi:
