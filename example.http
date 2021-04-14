@@ -28,7 +28,10 @@ PUT {{baseUrl}}/user/7
 DELETE {{baseUrl}}/user/123
 
 ###
-GET {{baseUrl}}/news/famous/1
+GET {{baseUrl}}/news/all/2/1
+
+###
+GET {{baseUrl}}/news/famous/10
 
 ###
 

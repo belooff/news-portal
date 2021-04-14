@@ -140,5 +140,5 @@ def rpc_command(news_type, data):
         
         return {
             'status': 'success',
-            'news': json.loads(news)
+            'news': news
         }
