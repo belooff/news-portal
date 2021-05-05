@@ -1,0 +1,15 @@
+version: '3'
+
+services: 
+    userservice:
+        environment: 
+            - DATABASE_URL=postgresql://postgres:postgres@users-service-db:5432/users_test?sslmode=disable
+
+    famous_news_service:
+        environment:
+            - QUERYBD_HOST=mongodb://querydb_famous:27017/news_test
+            - COMMANDDB_HOST=postgresql://postgres:postgres@commanddb_famous:5432/news_test?sslmode=disable
+
+    recommendation_service:
+        environment:
+            - DATABASE_URL=http://recommendation_db:7474/db/test_data
